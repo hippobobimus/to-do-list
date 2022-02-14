@@ -1,0 +1,12 @@
+:root {
+  --general-bg-clr: #FCE7F3;
+  --navbar-bg-clr: white;
+  --navbar-btn-bg-clr: #ec4899;
+  --navbar-btn-txt-clr: white;
+  --navbar-txt-clr: black;
+  --project-card-bg-clr: white;
+  --project-card-border-clr: #22D3EE;
+  --shadow-clr: grey;
+  --sidebar-bg-clr: #ec4899;
+  --sidebar-txt-clr: white;
+}

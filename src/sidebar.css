@@ -1,0 +1,62 @@
+@import url(./colors.css);
+
+#sidebar {
+  background-color: var(--sidebar-bg-clr);
+  color: var(--sidebar-txt-clr);
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 30px;
+  padding: 20px;
+}
+
+#sidebar .sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+#sidebar .sidebar-header-btns {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 5px;
+}
+
+#sidebar .sidebar-header-btns img:hover {
+  cursor: pointer;
+}
+
+#sidebar ul {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+#sidebar li {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px
+}
+
+#sidebar .name:hover,
+#sidebar .btns img {
+  text-decoration: underline;
+  text-underline-offset: 5px;
+  cursor: pointer;
+}
+
+#sidebar li .btns {
+  display: flex;
+  align-items: center;
+}
+
+#sidebar li .btns img {
+  height: 1.3rem;
+}
