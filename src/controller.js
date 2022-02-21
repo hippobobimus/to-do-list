@@ -22,6 +22,7 @@ class Controller {
     this.view.deleteProjectEvent.addListener(this.onDeleteProject);
     this.view.deleteTaskEvent.addListener(this.onDeleteTask);
     this.view.selectProjectEvent.addListener(this.onSelectProject);
+    this.view.updateFieldEvent.addListener(this.onFieldUpdate);
   }
 
   reload() {
@@ -39,6 +40,8 @@ class Controller {
     this.#currProjId = p.id;
 
     this.model.addProject(p);
+
+    this.reload();
   };
 
   onDeleteProject = (id) => {
@@ -54,6 +57,8 @@ class Controller {
     }
 
     this.model.deleteProject(id);
+    
+    this.reload();
   };
 
   onSelectProject = (id) => {
@@ -70,6 +75,12 @@ class Controller {
 
   onDeleteTask = (id) => {
     // TODO
+  };
+
+  onFieldUpdate = (field, newValue) => {
+    this.model.getProject(this.#currProjId)[field] = newValue;;
+
+    this.reload();
   };
 
 }
