@@ -1,9 +1,19 @@
 import Project from "./project.js";
 
 class Controller {
+  #currProjId;
+  static #DEFAULT_PROJ_ID = 1;
+
   constructor(model, view) {
     this.model = model;
     this.view = view;
+
+    // TODO localstorage persistance
+    // default project
+    this.model.addProject(new Project("General Tasks"));
+    this.#currProjId = Controller.#DEFAULT_PROJ_ID;
+
+    // Events
 
     this.model.updateEvent.addListener(this.onModelUpdate);
 
@@ -11,24 +21,47 @@ class Controller {
     this.view.newTaskEvent.addListener(this.onNewTask);
     this.view.deleteProjectEvent.addListener(this.onDeleteProject);
     this.view.deleteTaskEvent.addListener(this.onDeleteTask);
+    this.view.selectProjectEvent.addListener(this.onSelectProject);
   }
 
   reload() {
-    this.view.updateSidebar(this.model.projects);
+    this.view.updateSidebar(Controller.#DEFAULT_PROJ_ID, this.model.projects);
+    this.view.updateNavbar(this.model.getProject(this.#currProjId).name);
   }
 
   onModelUpdate = (projects) => {
-    this.view.updateSidebar(projects);
+    this.reload();
   }
 
   onNewProject = () => {
-    this.model.addProject(new Project());
-    this.view.updateSidebar(this.model.projects);
+    let p = new Project("New Project");
+
+    this.#currProjId = p.id;
+
+    this.model.addProject(p);
   };
 
   onDeleteProject = (id) => {
+    id = parseInt(id);
+
+    if (id === Controller.#DEFAULT_PROJ_ID) {
+      console.log("Cannot delete default project");
+      return;
+    }
+
+    if (id === this.#currProjId) {
+      this.#currProjId = Controller.#DEFAULT_PROJ_ID;
+    }
+
     this.model.deleteProject(id);
-    this.view.updateSidebar(this.model.projects);
+  };
+
+  onSelectProject = (id) => {
+    id = parseInt(id);
+
+    this.#currProjId = id;
+
+    this.reload();
   };
 
   onNewTask = () => {
@@ -38,6 +71,7 @@ class Controller {
   onDeleteTask = (id) => {
     // TODO
   };
+
 }
 
 export default Controller;

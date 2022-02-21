@@ -2,9 +2,9 @@ class Project {
   static #counter;
   #tasks = new Map();
 
-  constructor() {
+  constructor(name) {
     this.id = Project.#nextId;
-    this.name = "New Project";
+    this.name = name;
   }
 
   static get #nextId() {

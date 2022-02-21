@@ -8,15 +8,6 @@ class View {
   #root;
   #navbarRoot;
   #sidebarRoot;
-  #navbarBtnParams = {
-    "New Task": () => this.newTaskEvent.trigger(),
-  };
-  #sidebarHeaderBtnParams = {
-    "add-new": [AddNewIcon, () => this.newProjectEvent.trigger()],
-  };
-  #sidebarListBtnParams = {
-    "delete": [DeleteIcon, (e) => this.deleteProjectEvent.trigger(e.target.getAttribute("data-proj-id"))],
-  };
 
   constructor(rootElemId) {
     // events
@@ -24,6 +15,7 @@ class View {
     this.newTaskEvent = new AppEvent();
     this.deleteProjectEvent = new AppEvent();
     this.deleteTaskEvent = new AppEvent();
+    this.selectProjectEvent = new AppEvent();
 
     this.#root = document.getElementById(rootElemId);
 
@@ -36,12 +28,37 @@ class View {
     this.#navbarRoot.id = "navbar";
     this.#sidebarRoot.id = "sidebar";
 
-    this.navbar = new Navbar(this.#navbarRoot, "To-Do List", this.#navbarBtnParams);
-    this.sidebar = new Sidebar(this.#sidebarRoot, "Projects", this.#sidebarHeaderBtnParams, this.#sidebarListBtnParams);
+    let navbarBtnParams = {
+      "New Task": () => this.newTaskEvent.trigger(),
+    };
+    let sidebarHeaderBtnParams = {
+      "add-new": [AddNewIcon, () => this.newProjectEvent.trigger()],
+    };
+    let sidebarListBtnParams = {
+      "delete": [
+        DeleteIcon,
+        (e) => {
+          this.deleteProjectEvent.trigger(e.target.getAttribute("data-proj-id"));
+        },
+      ],
+    };
+    let sidebarListItemAction = (e) => {
+      this.selectProjectEvent.trigger(e.target.getAttribute("data-proj-id"));
+    };
+
+    this.navbar = new Navbar(this.#navbarRoot, "To-Do List", navbarBtnParams);
+    this.sidebar = new Sidebar(
+      this.#sidebarRoot,
+      "To-Do Lists",
+      "Projects",
+      sidebarHeaderBtnParams,
+      sidebarListItemAction,
+      sidebarListBtnParams
+    );
   }
 
-  updateSidebar(projects) {
-    this.sidebar.reload(projects);
+  updateSidebar(stickyProjId, projects) {
+    this.sidebar.reload(stickyProjId, projects);
   }
 
   updateNavbar(projName) {

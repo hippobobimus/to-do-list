@@ -25,12 +25,16 @@ class Model {
   }
 
   deleteProject(id) {
-    this.#projectsMap.delete(parseInt(id));
+    id = parseInt(id);
+
+    this.#projectsMap.delete(id);
 
     this.updateEvent.trigger(this.projects);
   }
 
   getProject(id) {
+    id = parseInt(id);
+
     return this.#projectsMap.get(id);
   }
 }

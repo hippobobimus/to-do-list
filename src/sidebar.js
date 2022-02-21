@@ -1,34 +1,46 @@
 import "./sidebar.css";
 
 class Sidebar {
-  #listBtnParams;
+  #itemBtnParams;
   #index;
+  #itemAction;
   #root;
+  #stickyIndex;
 
-  constructor(rootElem, headingString, headerBtnParams, listBtnParams) {
+  constructor(rootElem, mainHeadingStr, indexHeadingStr, indexHeaderBtnParams, itemAction, itemBtnParams) {
     this.#root = rootElem;
-    this.#listBtnParams = listBtnParams;
+    this.#itemAction = itemAction;
+    this.#itemBtnParams = itemBtnParams;
   
-    let header = document.createElement("div");
+    let mainHeader = document.createElement("div");
+    this.#stickyIndex = document.createElement("ul");
+    let indexHeader = document.createElement("div");
     this.#index = document.createElement("ul");
 
-    let heading = document.createElement("h2");
-    let headerBtns = document.createElement("div");
+    let mainHeading = document.createElement("h2");
+    let indexHeading = document.createElement("h3");
 
-    this.#root.appendChild(header);
+    let indexHeaderBtns = document.createElement("div");
+
+    this.#root.appendChild(mainHeader);
+    this.#root.appendChild(this.#stickyIndex);
+    this.#root.appendChild(indexHeader);
     this.#root.appendChild(this.#index);
-    header.appendChild(heading);
-    header.appendChild(headerBtns);
+    mainHeader.appendChild(mainHeading);
+    indexHeader.appendChild(indexHeading);
+    indexHeader.appendChild(indexHeaderBtns);
 
-    header.classList.add("sidebar-header");
-    headerBtns.classList.add("sidebar-header-btns");
+    mainHeader.classList.add("sidebar-header");
+    indexHeader.classList.add("sidebar-header");
+    indexHeaderBtns.classList.add("sidebar-header-btns");
 
-    heading.innerText = headingString;
+    mainHeading.innerText = mainHeadingStr;
+    indexHeading.innerText = indexHeadingStr;
 
-    for (let [btnClass, [iconPath, action]] of Object.entries(headerBtnParams)) {
+    for (let [btnClass, [iconPath, action]] of Object.entries(indexHeaderBtnParams)) {
       let btn = document.createElement("img");
 
-      headerBtns.appendChild(btn);
+      indexHeaderBtns.appendChild(btn);
 
       btn.classList.add(btnClass);
       btn.src = iconPath;
@@ -36,7 +48,8 @@ class Sidebar {
     }
   }
 
-  reload(projects) {
+  reload(stickyProjId, projects) {
+    this.#stickyIndex.innerHTML = "";
     this.#index.innerHTML = "";
 
     projects.forEach(p => {
@@ -44,17 +57,25 @@ class Sidebar {
       let name = document.createElement("span");
       let btns = document.createElement("div");
 
-      this.#index.appendChild(li);
       li.appendChild(name);
       li.appendChild(btns);
 
       name.classList.add("name");
       name.dataset.projId = p.id;
       name.innerText = p.name;
+      name.onclick = this.#itemAction;
+
+      if (p.id === stickyProjId) {
+        this.#stickyIndex.appendChild(li);
+        // no buttons to add so return early.
+        return;
+      } else {
+        this.#index.appendChild(li);
+      }
 
       btns.classList.add("btns");
 
-      for (let [btnClass, [iconPath, action]] of Object.entries(this.#listBtnParams)) {
+      for (let [btnClass, [iconPath, action]] of Object.entries(this.#itemBtnParams)) {
         let btn = document.createElement("img");
 
         btns.appendChild(btn);
