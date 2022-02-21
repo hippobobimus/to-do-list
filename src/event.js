@@ -9,8 +9,8 @@ class AppEvent {
     this.#listeners.push(l);
   }
 
-  trigger(params) {
-    this.#listeners.forEach((l) => l(params));
+  trigger(...params) {
+    this.#listeners.forEach((l) => l(...params));
   }
 }
 
