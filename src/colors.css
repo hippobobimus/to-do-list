@@ -5,8 +5,9 @@
   --navbar-btn-txt-clr: white;
   --navbar-txt-clr: black;
   --project-card-bg-clr: white;
-  --project-card-border-clr: #22D3EE;
   --shadow-clr: grey;
   --sidebar-bg-clr: #ec4899;
   --sidebar-txt-clr: white;
+  --task-bg-clr: #22D3EE;
+  --task-txt-clr: black;
 }

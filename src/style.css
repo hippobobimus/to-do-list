@@ -12,7 +12,7 @@ body, html {
 }
 
 #content {
-  background-color: var(--general-bg);
+  background-color: var(--general-bg-clr);
   display: grid;
   height: 100%;
   min-height: 100vh;
@@ -26,4 +26,10 @@ body, html {
 
 #sidebar {
   grid-row: 1 / -1;
+}
+
+#tasks {
+  grid-row: 2 / -1;
+  grid-column: 2 / -1;
+  padding: 10px;
 }

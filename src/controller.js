@@ -1,4 +1,5 @@
 import Project from "./project.js";
+import Task from "./task.js";
 
 class Controller {
   #currProjId;
@@ -26,8 +27,10 @@ class Controller {
   }
 
   reload() {
+    let proj = this.model.getProject(this.#currProjId);
     this.view.updateSidebar(Controller.#DEFAULT_PROJ_ID, this.model.projects);
-    this.view.updateNavbar(this.model.getProject(this.#currProjId).name);
+    this.view.updateNavbar(proj.name);
+    this.view.updateTaskDisplay(proj);
   }
 
   onNewProject = () => {
@@ -72,13 +75,17 @@ class Controller {
   };
 
   onNewTask = () => {
-    // TODO
-    console.log("new task");
+    this.model.getProject(this.#currProjId).addTask(new Task());
+
+    this.reload();
   };
 
   onDeleteTask = (id) => {
-    // TODO
-    console.log(`delete task id ${id}`);
+    id = parseInt(id);
+
+    this.model.getProject(this.#currProjId).deleteTask(id);
+
+    this.reload();
   };
 
   onModelUpdate = (projects) => {

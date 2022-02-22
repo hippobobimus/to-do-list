@@ -3,10 +3,11 @@ class Task {
 
   constructor() {
     this.id = Task.#nextId;
-    this.name = "New entry";
+    this.name = "New Task";
     this.desc = "test";
-    this.dueDate = "12th"
-    this.priority = "normal";
+    this.dueDate = new Date().toISOString().substring(0, 10);
+    this.priority = "standard";
+    this.complete = false;
   }
 
   static get #nextId() {
