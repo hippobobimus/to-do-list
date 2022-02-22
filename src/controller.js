@@ -23,7 +23,8 @@ class Controller {
     this.view.deleteProjectEvent.addListener(this.onDeleteProject);
     this.view.deleteTaskEvent.addListener(this.onDeleteTask);
     this.view.selectProjectEvent.addListener(this.onSelectProject);
-    this.view.updateFieldEvent.addListener(this.onFieldUpdate);
+    this.view.updateProjectFieldEvent.addListener(this.onProjectFieldUpdate);
+    this.view.updateTaskFieldEvent.addListener(this.onTaskFieldUpdate);
   }
 
   reload() {
@@ -68,8 +69,16 @@ class Controller {
     this.reload();
   };
 
-  onFieldUpdate = (field, newValue) => {
-    this.model.getProject(this.#currProjId)[field] = newValue;;
+  onProjectFieldUpdate = (field, newValue) => {
+    this.model.getProject(this.#currProjId)[field] = newValue;
+
+    this.reload();
+  };
+
+  onTaskFieldUpdate = (taskId, field, newValue) => {
+    let task = this.model.getProject(this.#currProjId).getTask(parseInt(taskId));
+
+    task[field] = newValue;
 
     this.reload();
   };

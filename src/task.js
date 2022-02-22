@@ -6,7 +6,7 @@ class Task {
     this.name = "New Task";
     this.desc = "test";
     this.dueDate = new Date().toISOString().substring(0, 10);
-    this.priority = "standard";
+    this.priority = 1;
     this.complete = false;
   }
 

@@ -18,7 +18,8 @@ class View {
     this.deleteProjectEvent = new AppEvent();
     this.deleteTaskEvent = new AppEvent();
     this.selectProjectEvent = new AppEvent();
-    this.updateFieldEvent = new AppEvent();
+    this.updateProjectFieldEvent = new AppEvent();
+    this.updateTaskFieldEvent = new AppEvent();
 
     this.#root = document.getElementById(rootElemId);
 
@@ -67,7 +68,7 @@ class View {
     this.navbar = new Navbar(
       this.#navbarRoot,
       navbarBtnParams,
-      this.updateFieldEvent,
+      this.updateProjectFieldEvent,
     );
 
     this.sidebar = new Sidebar(
@@ -79,7 +80,7 @@ class View {
       sidebarListBtnParams
     );
 
-    this.taskDisplay = new TaskDisplay(this.#taskDisplayRoot, taskBtnParams);
+    this.taskDisplay = new TaskDisplay(this.#taskDisplayRoot, taskBtnParams, this.updateTaskFieldEvent);
   }
 
   updateSidebar(stickyProjId, projects) {

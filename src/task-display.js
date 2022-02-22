@@ -4,10 +4,12 @@ class TaskDisplay {
   #btnParams;
   #root;
   #tasks;
+  #updateEvent;
 
-  constructor(rootElem, btnParams) {
+  constructor(rootElem, btnParams, updateEvent) {
     this.#root = rootElem;
     this.#btnParams = btnParams;
+    this.#updateEvent = updateEvent;
 
     this.#tasks = document.createElement("div");
 
@@ -43,6 +45,7 @@ class TaskDisplay {
       this.#tasks.appendChild(card);
 
       card.classList.add("task");
+      card.dataset.taskId = task.id;
 
       complete.type = "checkbox";
       complete.checked = task.complete;
@@ -54,6 +57,7 @@ class TaskDisplay {
       date.value = task.dueDate;
 
       priority.value = task.priority;
+      priority.options.item(task.priority).selected = true;
       highPriority.value = "High";
       highPriority.innerText = "High";
       standardPriority.value = "Standard";
@@ -75,6 +79,26 @@ class TaskDisplay {
         btn.src = iconPath;
         btn.onclick = action;
       }
+
+      complete.onblur = (e) => {
+        let taskId = e.target.parentElement.getAttribute("data-task-id");
+        this.#updateEvent.trigger(taskId, "complete", complete.checked);
+      };
+
+      name.onblur = (e) => {
+        let taskId = e.target.parentElement.getAttribute("data-task-id");
+        this.#updateEvent.trigger(taskId, "name", name.value);
+      };
+
+      date.onblur = (e) => {
+        let taskId = e.target.parentElement.getAttribute("data-task-id");
+        this.#updateEvent.trigger(taskId, "dueDate", date.value);
+      };
+
+      priority.onblur = (e) => {
+        let taskId = e.target.parentElement.getAttribute("data-task-id");
+        this.#updateEvent.trigger(taskId, "priority", parseInt(priority.selectedIndex));
+      };
     }
   }
 }
