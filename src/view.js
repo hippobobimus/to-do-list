@@ -8,7 +8,7 @@ class View {
   #root;
   #navbarRoot;
   #sidebarRoot;
-
+  
   constructor(rootElemId) {
     // events
     this.newProjectEvent = new AppEvent();
@@ -16,6 +16,7 @@ class View {
     this.deleteProjectEvent = new AppEvent();
     this.deleteTaskEvent = new AppEvent();
     this.selectProjectEvent = new AppEvent();
+    this.updateFieldEvent = new AppEvent();
 
     this.#root = document.getElementById(rootElemId);
 
@@ -31,9 +32,11 @@ class View {
     let navbarBtnParams = {
       "New Task": () => this.newTaskEvent.trigger(),
     };
+
     let sidebarHeaderBtnParams = {
       "add-new": [AddNewIcon, () => this.newProjectEvent.trigger()],
     };
+
     let sidebarListBtnParams = {
       "delete": [
         DeleteIcon,
@@ -42,11 +45,17 @@ class View {
         },
       ],
     };
+
     let sidebarListItemAction = (e) => {
       this.selectProjectEvent.trigger(e.target.getAttribute("data-proj-id"));
     };
 
-    this.navbar = new Navbar(this.#navbarRoot, "To-Do List", navbarBtnParams);
+    this.navbar = new Navbar(
+      this.#navbarRoot,
+      navbarBtnParams,
+      this.updateFieldEvent,
+    );
+
     this.sidebar = new Sidebar(
       this.#sidebarRoot,
       "To-Do Lists",

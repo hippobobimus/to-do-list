@@ -30,10 +30,6 @@ class Controller {
     this.view.updateNavbar(this.model.getProject(this.#currProjId).name);
   }
 
-  onModelUpdate = (projects) => {
-    this.reload();
-  }
-
   onNewProject = () => {
     let p = new Project("New Project");
 
@@ -69,20 +65,26 @@ class Controller {
     this.reload();
   };
 
-  onNewTask = () => {
-    // TODO
-  };
-
-  onDeleteTask = (id) => {
-    // TODO
-  };
-
   onFieldUpdate = (field, newValue) => {
     this.model.getProject(this.#currProjId)[field] = newValue;;
 
     this.reload();
   };
 
+  onNewTask = () => {
+    // TODO
+    console.log("new task");
+  };
+
+  onDeleteTask = (id) => {
+    // TODO
+    console.log(`delete task id ${id}`);
+  };
+
+  onModelUpdate = (projects) => {
+    // TODO
+    console.log("model updated");
+  }
 }
 
 export default Controller;

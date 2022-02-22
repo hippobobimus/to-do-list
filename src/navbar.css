@@ -10,6 +10,13 @@
   padding: 20px 50px;
 }
 
+#navbar input {
+  outline: none;
+  border: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
 #navbar ul {
   list-style-type: none;
   display: flex;

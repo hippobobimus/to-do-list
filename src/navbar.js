@@ -3,26 +3,31 @@ import "./navbar.css";
 class Navbar {
   #btns
   #btnParams;
-  #heading;
+  #name;
   #root;
 
-  constructor(rootElem, headingString, btnParams) {
+  constructor(rootElem, btnParams, updateEvent) {
     this.#root = rootElem;
     this.#btnParams = btnParams;
 
-    this.#heading = document.createElement("h1");
+    this.#name = document.createElement("input");
+    this.#name.type = "text";
+    this.#name.maxLength = 20;
+
+    this.#name.onblur = () => {
+      updateEvent.trigger("name", this.#name.value);
+    };
+
     this.#btns = document.createElement("ul");
 
-    this.#root.appendChild(this.#heading);
+    this.#root.appendChild(this.#name);
     this.#root.appendChild(this.#btns);
 
     this.#btns.id = "btns";
-
-    this.reload(headingString);
   }
 
-  reload(headingString) {
-    this.#heading.innerText = headingString;
+  reload(projName) {
+    this.#name.value = projName;
 
     this.#btns.innerHTML = "";
   
