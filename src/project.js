@@ -1,3 +1,5 @@
+import Task from "./task.js";
+
 class Project {
   static #counter;
   #tasks = new Map();
@@ -26,6 +28,30 @@ class Project {
 
   getTask(id) {
     return this.#tasks.get(parseInt(id));
+  }
+
+  static fromJSON(json) {
+    let proj = new Project();
+
+    proj.id = json.id;
+    proj.name = json.name;
+
+    // ensure counter takes account of largest id
+    Project.#counter = Math.max(proj.id, Project.#counter);
+
+    for (let task of json.tasks) {
+      proj.addTask(Task.fromJSON(task));
+    }
+
+    return proj;
+  }
+
+  toJSON() {
+    return {
+      id: this.id,
+      name: this.name,
+      tasks: this.tasks,
+    };
   }
 }
 

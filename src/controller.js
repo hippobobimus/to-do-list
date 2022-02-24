@@ -1,22 +1,32 @@
+import Model from "./model.js";
 import Project from "./project.js";
 import Task from "./task.js";
+import View from "./view.js";
 
 class Controller {
-  #currProjId;
   static #DEFAULT_PROJ_ID = 1;
+  #currProjId;
+  #storage;
 
-  constructor(model, view) {
-    this.model = model;
-    this.view = view;
+  constructor(root) {
+    this.#storage = window.localStorage;
 
-    // TODO localstorage persistance
-    // default project
-    this.model.addProject(new Project("General Tasks"));
+    this.view = new View(root);
+
+    let storedModel = this.loadModel();
+
+    if (storedModel) {
+      this.model = storedModel;
+    } else {
+      this.model = new Model();
+
+      // default project
+      this.model.addProject(new Project("General Tasks"));
+    }
+
     this.#currProjId = Controller.#DEFAULT_PROJ_ID;
 
     // Events
-
-    this.model.updateEvent.addListener(this.onModelUpdate);
 
     this.view.newProjectEvent.addListener(this.onNewProject);
     this.view.newTaskEvent.addListener(this.onNewTask);
@@ -25,6 +35,21 @@ class Controller {
     this.view.selectProjectEvent.addListener(this.onSelectProject);
     this.view.updateProjectFieldEvent.addListener(this.onProjectFieldUpdate);
     this.view.updateTaskFieldEvent.addListener(this.onTaskFieldUpdate);
+  }
+
+  loadModel() {
+    let storedModel = this.#storage.getItem("model");
+
+    if (storedModel) {
+      let parsed = JSON.parse(storedModel);
+      return Model.fromJSON(parsed);
+    }
+
+    return false;
+  }
+
+  storeModel() {
+    this.#storage.setItem("model", JSON.stringify(this.model));
   }
 
   reload() {
@@ -42,6 +67,7 @@ class Controller {
     this.model.addProject(p);
 
     this.reload();
+    this.storeModel();
   };
 
   onDeleteProject = (id) => {
@@ -59,6 +85,7 @@ class Controller {
     this.model.deleteProject(id);
     
     this.reload();
+    this.storeModel();
   };
 
   onSelectProject = (id) => {
@@ -73,6 +100,7 @@ class Controller {
     this.model.getProject(this.#currProjId)[field] = newValue;
 
     this.reload();
+    this.storeModel();
   };
 
   onTaskFieldUpdate = (taskId, field, newValue) => {
@@ -81,12 +109,14 @@ class Controller {
     task[field] = newValue;
 
     this.reload();
+    this.storeModel();
   };
 
   onNewTask = () => {
     this.model.getProject(this.#currProjId).addTask(new Task());
 
     this.reload();
+    this.storeModel();
   };
 
   onDeleteTask = (id) => {
@@ -95,12 +125,8 @@ class Controller {
     this.model.getProject(this.#currProjId).deleteTask(id);
 
     this.reload();
+    this.storeModel();
   };
-
-  onModelUpdate = (projects) => {
-    // TODO
-    console.log("model updated");
-  }
 }
 
 export default Controller;

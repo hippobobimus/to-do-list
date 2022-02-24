@@ -58,11 +58,8 @@ class TaskDisplay {
 
       priority.value = task.priority;
       priority.options.item(task.priority).selected = true;
-      highPriority.value = "High";
       highPriority.innerText = "High";
-      standardPriority.value = "Standard";
       standardPriority.innerText = "Standard";
-      lowPriority.value = "Low";
       lowPriority.innerText = "Low";
 
       let btns = document.createElement("div");

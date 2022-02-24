@@ -1,12 +1,11 @@
 import AppEvent from "./event.js";
+import Project from "./project.js";
 
 class Model {
   #projectsMap;
 
   constructor() {
     this.#projectsMap = new Map();
-
-    this.updateEvent = new AppEvent();
   }
 
   // Returns an array of projects sorted by name in alphabetical order.
@@ -20,22 +19,32 @@ class Model {
 
   addProject(project) {
     this.#projectsMap.set(project.id, project);
-
-    this.updateEvent.trigger(this.projects);
   }
 
   deleteProject(id) {
     id = parseInt(id);
 
     this.#projectsMap.delete(id);
-
-    this.updateEvent.trigger(this.projects);
   }
 
   getProject(id) {
     id = parseInt(id);
 
     return this.#projectsMap.get(id);
+  }
+
+  static fromJSON(json) {
+    let model = new Model();
+
+    for (let proj of json.projects) {
+      model.addProject(Project.fromJSON(proj));
+    }
+
+    return model;
+  }
+
+  toJSON() {
+    return {projects: this.projects};
   }
 }
 
