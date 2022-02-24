@@ -26,7 +26,9 @@ class TaskDisplay {
 
       let complete = document.createElement("input");
       let name = document.createElement("input");
+      let dateLabel = document.createElement("label");
       let date = document.createElement("input");
+      let priorityLabel = document.createElement("label");
       let priority = document.createElement("select");
 
       let highPriority = document.createElement("option");
@@ -39,7 +41,9 @@ class TaskDisplay {
 
       card.appendChild(complete);
       card.appendChild(name);
+      card.appendChild(dateLabel);
       card.appendChild(date);
+      card.appendChild(priorityLabel);
       card.appendChild(priority);
 
       this.#tasks.appendChild(card);
@@ -53,9 +57,17 @@ class TaskDisplay {
       name.type = "text";
       name.value = task.name;
 
+      dateLabel.innerText = "Due:"
+      dateLabel.htmlFor = "date-" + task.id;
+
+      date.id = "date-" + task.id;
       date.type = "date";
       date.value = task.dueDate;
 
+      priorityLabel.innerText = "Priority:"
+      priorityLabel.htmlFor = "priority-" + task.id;
+
+      priority.id = "priority-" + task.id;
       priority.value = task.priority;
       priority.options.item(task.priority).selected = true;
       highPriority.innerText = "High";
